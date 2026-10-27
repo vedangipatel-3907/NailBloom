@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Book Appointment | NailBloom</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body data-page="booking">
+    <div id="header"></div>
+    <main>
+        <section class="page-head container"><span class="eyebrow">ONLINE APPOINTMENT</span>
+            <h1>Book Your Nail Session</h1>
+            <p>Choose a service, date, time and nail artist.</p>
+        </section>
+        <section class="section container booking-layout">
+            <form id="bookingForm" class="booking-card">
+                <div class="form-grid"><label class="label">Name<input id="name" class="input" required></label><label
+                        class="label">Phone<input id="phone" class="input" pattern="[0-9]{10}" required
+                            placeholder="10 digit number"></label></div><label class="label">Email<input id="email"
+                        class="input" type="email" required></label>
+                <div class="form-grid"><label class="label">Service<select id="service" class="input"
+                            required></select></label><label class="label">Artist<select id="artist"
+                            class="input"></select></label></div>
+                <div class="form-grid"><label class="label">Date<input id="date" class="input" type="date"
+                            required></label><label class="label">Time<select id="time" class="input" required>
+                            <option value="">Choose time</option>
+                            <option>10:00 AM</option>
+                            <option>11:30 AM</option>
+                            <option>01:00 PM</option>
+                            <option>02:30 PM</option>
+                            <option>04:00 PM</option>
+                            <option>05:30 PM</option>
+                            <option>07:00 PM</option>
+                        </select></label></div><label class="label">Notes<textarea id="notes" class="input" rows="4"
+                        placeholder="Any design request?"></textarea></label><button class="btn pink full">Confirm
+                    Appointment</button>
+                <div id="msg"></div>
+            </form>
+            <aside class="booking-card summary">
+                <h2>Booking Summary</h2>
+                <p id="summary">Select a service to see price.</p>
+                <hr>
+                <p>Cancellation is available from your dashboard.</p>
+            </aside>
+        </section>
+    </main>
+    <div id="footer"></div>
+    <script src="../js/app.js"></script>
+    <script src="../js/data.js"></script>
+    <script>const qs = new URLSearchParams(location.search); const sel = document.getElementById('service'); sel.innerHTML = '<option value="">Choose service</option>' + services.map(s => `<option value="${s.id}">${s.name} — ₹${s.price}</option>`).join(''); artist.innerHTML = artists.map(a => `<option>${a}</option>`).join(''); date.min = new Date().toISOString().split('T')[0]; if (qs.get('service')) sel.value = qs.get('service'); function update() { const s = services.find(x => x.id === sel.value); summary.innerHTML = s ? `<strong>${s.name}</strong><br>${s.time}<br><b>₹${s.price}</b>` : 'Select a service to see price.' } sel.onchange = update; update(); bookingForm.onsubmit = e => { e.preventDefault(); if (!bookingForm.checkValidity()) { bookingForm.reportValidity(); return } let list = getBookings(); const item = { id: Date.now(), name: name.value, phone: phone.value, email: email.value, service: sel.value, serviceName: services.find(x => x.id === sel.value).name, artist: artist.value, date: date.value, time: time.value, notes: notes.value, status: 'Confirmed' }; if (list.some(x => x.date === item.date && x.time === item.time && x.status === 'Confirmed')) { msg.innerHTML = '<p class="error">This time slot is already booked. Please choose another time.</p>'; return } list.push(item); saveBookings(list); msg.innerHTML = '<p class="success">Appointment confirmed! Check My Appointments for details.</p>'; toast('Appointment booked successfully'); bookingForm.reset(); update() };</script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Gallery | NailBloom</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body data-page="gallery">
+    <div id="header"></div>
+    <main>
+        <section class="page-head container"><span class="eyebrow">OUR WORK</span>
+            <h1>Nail Art Gallery</h1>
+            <p>Find inspiration for your next appointment.</p>
+        </section>
+        <section class="section container">
+            <div class="gallery-filter"><button class="active" data-f="all">All</button><button
+                    data-f="classic">Classic</button><button data-f="art">Nail Art</button><button
+                    data-f="gel">Gel</button></div>
+            <div id="gallery" class="gallery-items"></div>
+        </section>
+    </main>
+    <div id="footer"></div>
+    <script src="../js/app.js"></script>
+    <script>const pics = [['classic', 'https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=85'], ['art', 'https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=85'], ['gel', 'https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=85'], ['art', 'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?auto=format&fit=crop&w=800&q=85'], ['gel', 'https://images.unsplash.com/photo-1599948128020-9a44505b0d8c?auto=format&fit=crop&w=800&q=85'], ['classic', 'https://images.unsplash.com/photo-1619451334792-150fd785ee74?auto=format&fit=crop&w=800&q=85']]; function render(f = 'all') { gallery.innerHTML = pics.filter(x => f === 'all' || x[0] === f).map(x => `<img src="${x[1]}" alt="Nail design">`).join('') } document.addEventListener('DOMContentLoaded', () => render()); document.querySelectorAll('[data-f]').forEach(b => b.onclick = () => { document.querySelectorAll('[data-f]').forEach(x => x.classList.remove('active')); b.classList.add('active'); render(b.dataset.f) })</script>
+</body>
+
+</html>
